@@ -1,13 +1,16 @@
 {
-  "name": "front-end-skills-test",
+  "name": "fe-skill-test-recipe-api",
   "version": "0.1.0",
+  "description": "API-based frontend skill test",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
+    "json-server": "^0.16.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "web-vitals": "^0.2.4"
   },
@@ -15,8 +18,17 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start:api": "json-server --watch data.json --id uuid --port 3001"
   },
+  "keywords": [
+    "api",
+    "fe",
+    "skill",
+    "test",
+    "front",
+    "end"
+  ],
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -34,5 +46,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "author": "Crescendo Collective",
+  "license": "ISC"
 }

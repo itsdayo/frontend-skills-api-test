@@ -1,0 +1,44 @@
+.food-form {
+  justify-content: center;
+  align-self: "center";
+  background-color: aquamarine;
+  position: absolute;
+  width: 50%;
+  right: 0;
+  border: 3px solid #000 !important;
+}
+.food-list {
+  width: 50%;
+  float: left;
+  border: 3px solid #000 !important;
+}
+.food-list-content {
+  margin-left: 10px;
+  margin-top: 5px;
+  padding-bottom: 5px;
+}
+.food-form-content {
+  width: 0%;
+  margin: auto;
+}
+.food-card {
+  border: 1px solid green !important;
+  width: 567px;
+  height: 150px;
+}
+.food-card-content {
+  padding: 5px;
+}
+.food-list-description {
+  position: relative;
+  margin-left: 170px;
+  bottom: 100px;
+}
+.food-card-text {
+  padding-bottom: 5px;
+}
+.food-card-buttons {
+  position: relative;
+  bottom: 90px;
+  left: 20px;
+}
