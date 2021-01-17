@@ -1,9 +1,6 @@
 .food-form {
-  justify-content: center;
-  align-self: "center";
-  background-color: aquamarine;
   position: absolute;
-  width: 50%;
+  width: 49%;
   right: 0;
   border: 3px solid #000 !important;
 }
@@ -18,17 +15,19 @@
   padding-bottom: 5px;
 }
 .food-form-content {
-  width: 0%;
-  margin: auto;
+  margin-left: 30px;
+  margin-top: 15px;
+  padding-bottom: 5px;
 }
 .food-card {
   border: 1px solid green !important;
   width: 567px;
-  height: 150px;
+  height: 170px;
 }
 .food-card-content {
   padding: 5px;
 }
+
 .food-list-description {
   position: relative;
   margin-left: 170px;
@@ -41,4 +40,39 @@
   position: relative;
   bottom: 90px;
   left: 20px;
+}
+
+.text-input {
+  width: 180px;
+}
+.number-input {
+  width: 35px;
+}
+.add-button {
+  right: 10px;
+  position: absolute;
+}
+.form-label {
+  padding-right: 5px;
+}
+.servings {
+  float: left;
+}
+
+.ingredient-form {
+  margin-top: 25px;
+}
+
+.ingredient-number-input {
+  width: 35px;
+}
+.textarea {
+  width: 450px;
+  top: 5px;
+}
+hr {
+  width: 500px;
+}
+.bold-text {
+  font-weight: "bold" !important;
 }
