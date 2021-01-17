@@ -3,34 +3,43 @@ import { Formik, Field, Form } from "formik";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+const Button = styled.button`
+  position: "absolute";
+  margin-left: 430px;
+  margin-top: 40px;
+`;
+const IngredientButton = styled.button`
+  position: "absolute";
+  margin-left: 400px;
+`;
+const InstructionButton = styled.button`
+  position: "absolute";
+  margin-left: 400px;
+`;
+
+const HrTagContainer = styled.div`
+  margin-top: 20px;
+`;
 
 function FoodForm() {
   const [ingredients, setIngredients] = useState([]);
   const [directions, setDriections] = useState([]);
-
-  const Button = styled.button`
-    position: "absolute";
-    margin-left: 430px;
-    margin-top: 40px;
-  `;
-  const IngredientButton = styled.button`
-    position: "absolute";
-    margin-left: 430px;
-  `;
-  const InstructionButton = styled.button`
-    position: "absolute";
-    margin-left: 430px;
-  `;
-
-  const HrTagContainer = styled.div`
-    margin-top: 20px;
-  `;
-  const BoldText = styled.span`
-    font-weight: "bold";
-  `;
-
+  const history = useHistory();
   function addFoodItem(data) {
-    console.log(data);
+    let arr = data;
+    arr.ingredients = ingredients;
+    arr.directions = directions;
+    axios
+      .post(`http://localhost:3001/recipes`, arr)
+      .then((res) => {
+        history.push("/");
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   }
   function addIngredient(data) {
     let arr = ingredients;
@@ -49,7 +58,6 @@ function FoodForm() {
     }
     arr.push(data);
     setDriections(() => [...arr]);
-    console.log(directions);
   }
   return (
     <div>
@@ -63,7 +71,7 @@ function FoodForm() {
               <div style={{ float: "left" }}>
                 <label className="form-label">Name</label>
                 <Field
-                  name="name"
+                  name="title"
                   type="text"
                   className="text-input"
                   placeholder="Enter a name"
@@ -90,11 +98,8 @@ function FoodForm() {
                 >
                   <label className="form-label">Servings</label>
 
-                  <Field
-                    name="serving"
-                    //   type="number"
-                    //   placeholder="How many servings?"
-                    render={({ field, form, meta }) => (
+                  <Field name="servings">
+                    {({ field, form, meta }) => (
                       <span>
                         <input
                           {...field}
@@ -103,20 +108,19 @@ function FoodForm() {
                         />
                       </span>
                     )}
-                  />
+                  </Field>
                 </div>
                 <br />
                 <div
                   style={{
                     position: "absolute",
-                    float: "right",
-                    marginLeft: 160,
+
+                    marginLeft: 270,
                   }}
                 >
                   <label className="form-label">Prep Time (in mins)</label>
-                  <Field
-                    name="prepTime"
-                    render={({ field, form, meta }) => (
+                  <Field name="prepTime">
+                    {({ field, form, meta }) => (
                       <span>
                         <input
                           {...field}
@@ -125,19 +129,13 @@ function FoodForm() {
                         />
                       </span>
                     )}
-                  />
+                  </Field>
                 </div>
-                <div
-                  style={{
-                    marginLeft: 370,
-                    marginTop: -1,
-                  }}
-                >
+                <br />
+                <div style={{ marginTop: 15 }}>
                   <label className="form-label">Cook time (in mins)</label>
-                  <Field
-                    name="cookTime"
-                    type="number"
-                    render={({ field, form, meta }) => (
+                  <Field name="cookTime" type="number">
+                    {({ field, form, meta }) => (
                       <span>
                         <input
                           {...field}
@@ -146,7 +144,7 @@ function FoodForm() {
                         />
                       </span>
                     )}
-                  />
+                  </Field>
                 </div>
               </div>
             </Form>
@@ -168,17 +166,16 @@ function FoodForm() {
                 <label className="form-label">Amount</label>
                 <Field
                   name="amount"
-                  type="text"
-                  placeholder="How much? Ex. 1 cup"
+                  type="number"
+                  step={0.1}
+                  placeholder="How much?"
                   className="text-input"
                 />
               </div>
               <div style={{ marginLeft: 250 }}>
                 <label className="form-label">Measurement</label>
-                <Field
-                  name="measurement"
-                  className="text-input-ingredients"
-                  render={({ field, form, meta }) => (
+                <Field name="measurement" className="text-input-ingredients">
+                  {({ field, form, meta }) => (
                     <span>
                       <input
                         placeholder="Ex. teaspoon"
@@ -188,15 +185,12 @@ function FoodForm() {
                       />
                     </span>
                   )}
-                />
+                </Field>
               </div>
               <div style={{ postion: "absolute", marginTop: 15 }}>
                 <label className="form-label">Name</label>
-                <Field
-                  name="name"
-                  type="text"
-                  className="text-input"
-                  render={({ field, form, meta }) => (
+                <Field name="name" type="text" className="text-input">
+                  {({ field, form, meta }) => (
                     <span>
                       <input
                         {...field}
@@ -206,9 +200,11 @@ function FoodForm() {
                       />
                     </span>
                   )}
-                />
+                </Field>
               </div>
-              <IngredientButton type="submit">Add Ingredient</IngredientButton>
+              <IngredientButton className="btn btn-secondary " type="submit">
+                Submit Ingredient
+              </IngredientButton>
             </Form>
           )}
         />
@@ -250,7 +246,7 @@ function FoodForm() {
                 />
               </div>
               <div style={{ marginTop: 15 }}>
-                <label className="form-label">Option</label>
+                <label className="form-label">Optional</label>
                 <Field name="option" component="select">
                   <option value="">---Select if it is Optional ---</option>
                   <option value="true">Yes</option>
@@ -258,7 +254,7 @@ function FoodForm() {
                 </Field>
               </div>
 
-              <InstructionButton type="submit">
+              <InstructionButton className="btn btn-secondary" type="submit">
                 Add Instruction
               </InstructionButton>
             </Form>
@@ -277,7 +273,7 @@ function FoodForm() {
           <hr />
         </HrTagContainer>
       </div>
-      <Button form="foodForm" type="submit">
+      <Button className="btn btn-primary" form="foodForm" type="submit">
         Add Food{" "}
       </Button>
     </div>

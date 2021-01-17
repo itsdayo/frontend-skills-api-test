@@ -22,7 +22,7 @@
 .food-card {
   border: 1px solid green !important;
   width: 567px;
-  height: 170px;
+  height: 250px;
 }
 .food-card-content {
   padding: 5px;
@@ -40,16 +40,17 @@
   position: relative;
   bottom: 90px;
   left: 20px;
+  margin: auto;
+  width: 55%;
 }
 
 .text-input {
   width: 180px;
 }
 .number-input {
-  width: 35px;
+  width: 55px;
 }
 .add-button {
-  right: 10px;
   position: absolute;
 }
 .form-label {
@@ -64,7 +65,7 @@
 }
 
 .ingredient-number-input {
-  width: 35px;
+  width: 55px;
 }
 .textarea {
   width: 450px;
@@ -75,4 +76,23 @@ hr {
 }
 .bold-text {
   font-weight: "bold" !important;
+}
+
+.modal {
+  width: 200px;
+  background-color: white;
+}
+.ingredients-container {
+  position: relative;
+  margin: auto;
+  width: 50%;
+  border-width: 4px;
+  border: 3px solid black !important;
+  margin-top: 30px;
+  background-color: blanchedalmond;
+}
+.ingredients-header {
+  position: relative;
+  margin: auto;
+  width: 30%;
 }
