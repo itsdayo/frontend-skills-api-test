@@ -47,6 +47,9 @@ function Ingredients(props) {
       transform: "translate(-50%, -50%)",
     },
   };
+  function navigateToHomePage() {
+    history.push("/");
+  }
   function openModal(foodItem, ingredient) {
     setIsOpen(true);
     console.log(ingredient);
@@ -111,14 +114,13 @@ function Ingredients(props) {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        contentLabel="Example Modal"
         style={customStyles}
         ariaHideApp={false}
       >
         <CloseModalButton className="btn btn-secondary" onClick={closeModal}>
           X
         </CloseModalButton>
-        <div className="ingredient-form">
+        <div className="modal-form">
           <h4>Ingredient</h4>
           <Formik
             enableReinitialize
@@ -178,7 +180,9 @@ function Ingredients(props) {
           />
         </div>
       </Modal>
-
+      <button onClick={navigateToHomePage} className="btn btn-secondary">
+        Back
+      </button>
       <div className="ingredients-container">
         <h1 className="ingredients-header">Ingredients </h1>
         <div style={{ marginTop: 15 }}>

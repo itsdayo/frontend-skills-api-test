@@ -60,10 +60,12 @@
   float: left;
 }
 
-.ingredient-form {
+.modal-form {
   margin-top: 25px;
 }
-
+.directions-form {
+  margin-top: 25px;
+}
 .ingredient-number-input {
   width: 55px;
 }
@@ -92,6 +94,12 @@ hr {
   background-color: blanchedalmond;
 }
 .ingredients-header {
+  position: relative;
+  margin: auto;
+  width: 30%;
+}
+
+.directions-header {
   position: relative;
   margin: auto;
   width: 30%;

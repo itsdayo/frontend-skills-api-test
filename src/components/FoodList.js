@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import styled from "styled-components";
 import { Formik, Field, Form } from "formik";
-
+import { useSelector, useDispatch } from "react-redux";
 const CloseModalButton = styled.button`
   position: "absolute";
   left: 4px;
@@ -13,14 +13,13 @@ const CloseModalButton = styled.button`
 `;
 const SubmitEditButton = styled.button`
   position: "absolute";
-  margin-left: 250px;
-
-  background-color: gold;
+  margin-left: 450px;
+  margin-top: 15px;
 `;
 function FoodList(props) {
   const history = useHistory();
+  const reduxState = useSelector((state) => state.changeData);
   const [allData, setAllData] = useState([]);
-  const [allSpecials, setAllSpecials] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [foodItem, setFoodItem] = useState({});
   const [formList, setFormList] = useState([]);
@@ -30,12 +29,14 @@ function FoodList(props) {
     axios
       .get("http://localhost:3001/recipes")
       .then((res) => {
-        setAllData(res.data);
+        setAllData(() => [...res.data]);
       })
       .catch(function (error) {
         // handle error
         console.log(error);
       });
+
+    console.log(reduxState);
   }, []);
 
   function openModal(foodItem) {
@@ -57,17 +58,94 @@ function FoodList(props) {
       transform: "translate(-50%, -50%)",
     },
   };
-  function editItem() {
-    history.push("/ingredients");
+  function editItem(item) {
+    let newDate = new Date();
+    let minutes = newDate.getMinutes().toString();
+    let month = newDate.getMonth() + 1;
+    let newMonth = month.toString();
+    let year = newDate.getFullYear().toString();
+    let doubleDigitMin = "";
+    let date = newDate.getDate().toString();
+    let zero = "0";
+    let hours = newDate.getHours().toString();
+    let AMorPM = "";
+    let seconds = newDate.getSeconds().toString();
+    let doubleDigitSecs = "";
+    let lastPortionOfTime = "";
+    let doubleDigitMonth = "";
+    let doubleDigitHour = "";
+    if (minutes < 10) {
+      doubleDigitMin = zero.concat(minutes);
+    } else {
+      doubleDigitMin = minutes;
+    }
+    if (newMonth < 10) {
+      doubleDigitMonth = zero.concat(newMonth);
+    } else {
+      doubleDigitMonth = newMonth;
+    }
+    if (seconds < 10) {
+      doubleDigitSecs = zero.concat(seconds);
+    } else {
+      doubleDigitSecs = seconds;
+    }
+
+    if (hours >= 12) {
+      hours -= 12;
+      AMorPM = " PM";
+      lastPortionOfTime = doubleDigitSecs.concat(AMorPM);
+    } else {
+      AMorPM = " AM";
+      lastPortionOfTime = doubleDigitSecs.concat(AMorPM);
+    }
+    if (parseInt(hours) < 10) {
+      doubleDigitHour = zero.concat(hours);
+    } else {
+      doubleDigitHour = hours;
+    }
+    let dateTime =
+      doubleDigitMonth +
+      "/" +
+      date +
+      "/" +
+      year +
+      " " +
+      doubleDigitHour +
+      ":" +
+      doubleDigitMin +
+      ":" +
+      lastPortionOfTime;
+
+    let changedFoodItem = foodItem;
+    changedFoodItem.cookTime = item.cookTime;
+    changedFoodItem.description = item.description;
+    changedFoodItem.prepTime = item.prepTime;
+    changedFoodItem.servings = item.servings;
+    changedFoodItem.title = item.title;
+    changedFoodItem.editDate = dateTime;
+
+    axios
+      .put(`http://localhost:3001/recipes/${foodItem.uuid}`, changedFoodItem)
+      .then()
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+    window.location.reload();
   }
-  function viewDescription() {}
+  function viewDescription(foodItem) {
+    history.push({
+      pathname: "/directions",
+      state: { foodItem: foodItem },
+    });
+  }
   function viewIngredients(foodItem) {
     history.push({
       pathname: "/ingredients",
       state: { foodItem: foodItem },
     });
   }
-  function addIngredient() {}
+
   return (
     <div>
       <Modal
@@ -79,164 +157,115 @@ function FoodList(props) {
         <CloseModalButton className="btn btn-secondary" onClick={closeModal}>
           X
         </CloseModalButton>
+        <div className="modal-form">
+          <h2>Edit the food item</h2>
 
-        <h2>Edit the food item</h2>
-
-        <Formik
-          enableReinitialize
-          initialValues={{
-            title: foodItem.title,
-            description: foodItem.description,
-            servings: foodItem.servings,
-            prepTime: foodItem.prepTime,
-            cookTime: foodItem.cookTime,
-          }}
-          // onSubmit={addDirection}
-          render={(formikProps) => (
-            <Form>
-              <div style={{ float: "left" }}>
-                <label className="form-label">Name</label>
-                <Field
-                  name="title"
-                  type="text"
-                  className="text-input"
-                  placeholder="Enter a name"
-                  style={{ position: "absolute" }}
-                />
-                <br />
-              </div>
-              <div
-                style={{ position: "absolute", marginLeft: 270, marginTop: -2 }}
-              >
-                <label className="form-label">Description</label>
-                <Field
-                  name="description"
-                  type="text"
-                  placeholder="Enter a description"
-                  className="text-input"
-                />
-              </div>
-              <br />
-              <div>
-                <div
-                  className="servings"
-                  style={{ position: "absolute", marginTop: 19 }}
-                >
-                  <label className="form-label">Servings</label>
-
-                  <Field name="servings">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          {...field}
-                          type="number"
-                          className="number-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
+          <Formik
+            enableReinitialize
+            initialValues={{
+              title: foodItem.title,
+              description: foodItem.description,
+              servings: foodItem.servings,
+              prepTime: foodItem.prepTime,
+              cookTime: foodItem.cookTime,
+            }}
+            onSubmit={editItem}
+            render={(formikProps) => (
+              <Form>
+                <div style={{ float: "left" }}>
+                  <label className="form-label">Name</label>
+                  <Field
+                    name="title"
+                    type="text"
+                    className="text-input"
+                    placeholder="Enter a name"
+                    style={{ position: "absolute" }}
+                  />
+                  <br />
                 </div>
-                <br />
                 <div
                   style={{
                     position: "absolute",
-                    float: "right",
-                    marginLeft: 160,
+                    marginLeft: 270,
+                    marginTop: -2,
                   }}
                 >
-                  <label className="form-label">Prep Time (in mins)</label>
-                  <Field name="prepTime">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          {...field}
-                          type="number"
-                          className="number-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
-                </div>
-                <div
-                  style={{
-                    marginLeft: 370,
-                    marginTop: -1,
-                  }}
-                >
-                  <label className="form-label">Cook time (in mins)</label>
-                  <Field name="cookTime" type="number">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          {...field}
-                          type="number"
-                          className="number-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
-                </div>
-              </div>
-
-              <SubmitEditButton type="submit">Add Instruction</SubmitEditButton>
-            </Form>
-          )}
-        />
-        <div>
-          <h4>Ingredients</h4>
-          <Formik
-            enableReinitialize
-            initialValues={{}}
-            onSubmit={addIngredient}
-            render={(formikProps) => (
-              <Form>
-                <div style={{ position: "absolute", float: "left" }}>
-                  <label className="form-label">Amount</label>
+                  <label className="form-label">Description</label>
                   <Field
-                    name="amount"
+                    name="description"
                     type="text"
-                    placeholder="How much? Ex. 1 cup"
+                    placeholder="Enter a description"
                     className="text-input"
                   />
                 </div>
-                <div style={{ marginLeft: 250 }}>
-                  <label className="form-label">Measurement</label>
-                  <Field name="measurement" className="text-input-ingredients">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          placeholder="Ex. teaspoon"
-                          {...field}
-                          type="text"
-                          className="text-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
+                <br />
+                <div>
+                  <div
+                    className="servings"
+                    style={{ position: "absolute", marginTop: 19 }}
+                  >
+                    <label className="form-label">Servings</label>
+
+                    <Field name="servings">
+                      {({ field, form, meta }) => (
+                        <span>
+                          <input
+                            {...field}
+                            type="number"
+                            className="number-input"
+                          />
+                        </span>
+                      )}
+                    </Field>
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      position: "absolute",
+                      float: "right",
+                      marginLeft: 160,
+                    }}
+                  >
+                    <label className="form-label">Prep Time (in mins)</label>
+                    <Field name="prepTime">
+                      {({ field, form, meta }) => (
+                        <span>
+                          <input
+                            {...field}
+                            type="number"
+                            className="number-input"
+                          />
+                        </span>
+                      )}
+                    </Field>
+                  </div>
+                  <div
+                    style={{
+                      marginLeft: 380,
+                      marginTop: -1,
+                    }}
+                  >
+                    <label className="form-label">Cook time (in mins)</label>
+                    <Field name="cookTime" type="number">
+                      {({ field, form, meta }) => (
+                        <span>
+                          <input
+                            {...field}
+                            type="number"
+                            className="number-input"
+                          />
+                        </span>
+                      )}
+                    </Field>
+                  </div>
                 </div>
-                <div style={{ postion: "absolute", marginTop: 15 }}>
-                  <label className="form-label">Name</label>
-                  <Field name="name" type="text" className="text-input">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          {...field}
-                          placeholder="Enter ingredient name"
-                          type="text"
-                          className="text-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
-                </div>
-                <button type="submit">Add Ingredient</button>
+
+                <SubmitEditButton className="btn btn-primary" type="submit">
+                  Add Instruction
+                </SubmitEditButton>
               </Form>
             )}
           />
-
-          {/* {formList.map(function (input, index) {
-            return { input };
-          })} */}
         </div>
       </Modal>
       {allData.map((item, index) => (
@@ -300,7 +329,7 @@ function FoodList(props) {
             <button
               style={{ marginLeft: 10 }}
               className=" btn btn-warning"
-              onClick={viewDescription}
+              onClick={() => viewDescription(item)}
             >
               View Directions
             </button>
