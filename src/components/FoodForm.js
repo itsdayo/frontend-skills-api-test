@@ -1,12 +1,10 @@
 import { Formik, Field, Form } from "formik";
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { postRecipes } from "../actions";
+import { postNewRecipe } from "../actions/recipes";
+import moment from "moment";
 
 const Button = styled.button`
   position: "absolute";
@@ -67,85 +65,36 @@ const ServingsPrepAndCookContainer = styled.div``;
 function FoodForm() {
   const [ingredients, setIngredients] = useState([]);
   const [directions, setDriections] = useState([]);
-  const reduxState = useSelector((state) => state.changeData);
   const dispatch = useDispatch();
-  const history = useHistory();
-  function addFoodItem(data) {
-    let newDate = new Date();
-    let minutes = newDate.getMinutes().toString();
-    let month = newDate.getMonth() + 1;
-    let newMonth = month.toString();
-    let year = newDate.getFullYear().toString();
-    let doubleDigitMin = "";
-    let date = newDate.getDate().toString();
-    let zero = "0";
-    let hours = newDate.getHours().toString();
-    let AMorPM = "";
-    let seconds = newDate.getSeconds().toString();
-    let doubleDigitSecs = "";
-    let lastPortionOfTime = "";
-    let doubleDigitMonth = "";
-    let doubleDigitHour = "";
-    if (minutes < 10) {
-      doubleDigitMin = zero.concat(minutes);
-    } else {
-      doubleDigitMin = minutes;
-    }
-    if (newMonth < 10) {
-      doubleDigitMonth = zero.concat(newMonth);
-    } else {
-      doubleDigitMonth = newMonth;
-    }
-    if (seconds < 10) {
-      doubleDigitSecs = zero.concat(seconds);
-    } else {
-      doubleDigitSecs = seconds;
-    }
 
-    if (hours >= 12) {
-      hours -= 12;
-      AMorPM = " PM";
-      lastPortionOfTime = doubleDigitSecs.concat(AMorPM);
-    } else {
-      AMorPM = " AM";
-      lastPortionOfTime = doubleDigitSecs.concat(AMorPM);
-    }
-    if (parseInt(hours) < 10) {
-      doubleDigitHour = zero.concat(hours);
-    } else {
-      doubleDigitHour = hours;
-    }
-    let dateTime =
-      doubleDigitMonth +
-      "/" +
-      date +
-      "/" +
-      year +
-      " " +
-      doubleDigitHour +
-      ":" +
-      doubleDigitMin +
-      ":" +
-      lastPortionOfTime;
+  //form for submitting a new recipe
+  function addFoodItem(form) {
+    const date = moment().format("L");
+    const time = moment().format("LTS");
+    const dateAndTime = date + " " + time;
 
-    let arr = data;
-    arr.ingredients = ingredients;
-    arr.directions = directions;
-    arr.postDate = dateTime;
-    console.log(arr);
-    console.log(reduxState);
+    const newRecipe = {
+      uuid: uuidv4(),
+      title: form.title,
+      description: form.description,
+      servings: form.servings,
+      prepTime: form.prepTime,
+      ingredients: ingredients,
+      directions: directions,
+      postDate: dateAndTime,
+    };
 
-    dispatch(postRecipes(arr));
-
-    window.location.reload();
+    dispatch(postNewRecipe(newRecipe));
   }
+
+  //create ingredients for recipe
   function addIngredient(data) {
     let arr = ingredients;
     data.uuid = uuidv4();
     arr.push(data);
     setIngredients(() => [...arr]);
-    console.log(ingredients);
   }
+  //create directions for recipes
   function addDirection(data) {
     let arr = directions;
     if (data.option === "true") {
@@ -157,8 +106,9 @@ function FoodForm() {
     arr.push(data);
     setDriections(() => [...arr]);
   }
+
+  //change option from true and false to yes and no
   function changeOption(item) {
-    console.log(directions);
     if (item === "true") {
       return "yes";
     }
@@ -170,11 +120,8 @@ function FoodForm() {
   return (
     <div>
       <div>
-        <Formik
-          enableReinitialize
-          initialValues={{}}
-          onSubmit={addFoodItem}
-          render={(formikProps) => (
+        <Formik enableReinitialize initialValues={{}} onSubmit={addFoodItem}>
+          {(formikProps) => (
             <Form id="foodForm">
               <div>
                 <Name>
@@ -253,18 +200,15 @@ function FoodForm() {
               </div>
             </Form>
           )}
-        />
+        </Formik>
       </div>
       <HrTagContainer>
         <hr />
       </HrTagContainer>
       <div className="modal-form">
         <h4>Ingredients</h4>
-        <Formik
-          enableReinitialize
-          initialValues={{}}
-          onSubmit={addIngredient}
-          render={(formikProps) => (
+        <Formik enableReinitialize initialValues={{}} onSubmit={addIngredient}>
+          {(formikProps) => (
             <Form>
               <Amount>
                 <label className="form-label">Amount</label>
@@ -313,7 +257,7 @@ function FoodForm() {
               </IngredientButton>
             </Form>
           )}
-        />
+        </Formik>
         <ul>
           {ingredients.map((item, index) => (
             <li key={index}>
@@ -330,11 +274,8 @@ function FoodForm() {
 
       <div className="modal-form">
         <h4>Directions</h4>
-        <Formik
-          enableReinitialize
-          initialValues={{}}
-          onSubmit={addDirection}
-          render={(formikProps) => (
+        <Formik enableReinitialize initialValues={{}} onSubmit={addDirection}>
+          {(formikProps) => (
             <Form>
               <Instruction>
                 <label className="form-label">Instruction</label>
@@ -362,7 +303,7 @@ function FoodForm() {
               </InstructionButton>
             </Form>
           )}
-        />
+        </Formik>
         <ul>
           {directions.map((item, index) => (
             <li>

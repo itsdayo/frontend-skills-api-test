@@ -21,8 +21,8 @@
 }
 .food-card {
   border: 1px solid green !important;
-  width: 680px;
-  height: 290px;
+  width: 670px;
+  height: 240px;
 }
 .food-card-content {
   padding: 5px;
@@ -142,4 +142,11 @@ hr {
 }
 .edit-food-button-container {
   float: left;
+}
+.small-margin-top {
+  margin-top: 15px;
+}
+
+.button-move-left {
+  margin-left: -5px;
 }

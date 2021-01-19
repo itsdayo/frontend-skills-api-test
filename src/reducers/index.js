@@ -1,11 +1,12 @@
 import { combineReducers } from "redux";
 // import ingredients from "./ingredients";
 import recipes from "./recipes";
-import ingredients from "./ingredients";
+import specials from "./specials";
+
 // Combine all the reducers
 const rootReducer = combineReducers({
-  ingredients,
   recipes,
+  specials,
 });
 
 export default rootReducer;

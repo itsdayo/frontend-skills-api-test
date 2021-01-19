@@ -13,13 +13,13 @@
       "prepTime": 10,
       "cookTime": 20,
       "postDate": "01/20/2018 05:15:03 PM",
-      "editDate": "01/18/2021 10:17:36 PM",
+      "editDate": "02/05/2018 11:56:29 PM",
       "ingredients": [
         {
           "uuid": "62798278-2fbc-4c31-98de-b7959c191688",
-          "amount": 6.6,
-          "name": "queso brats",
-          "measurement": "package (19 oz)"
+          "amount": 1,
+          "measurement": "package (19 oz)",
+          "name": "queso brats"
         },
         {
           "uuid": "2df619ea-8472-48f4-9615-3f387a492d22",
@@ -120,7 +120,7 @@
           "optional": false
         },
         {
-          "instructions": "In another skillet, sautÃ© the onion, pepper, jalapeno and garlic in the remaining 1 tablespoon oil.",
+          "instructions": "In another skillet, sauté the onion, pepper, jalapeno and garlic in the remaining 1 tablespoon oil.",
           "optional": false
         },
         {
@@ -203,7 +203,7 @@
       ],
       "directions": [
         {
-          "instructions": "Preheat oven to 350Â°F.",
+          "instructions": "Preheat oven to 350°F.",
           "optional": false
         },
         {
@@ -219,7 +219,7 @@
           "optional": false
         },
         {
-          "instructions": "Bake for 20 minutes or until meatballs are cooked through (160Â°F).",
+          "instructions": "Bake for 20 minutes or until meatballs are cooked through (160°F).",
           "optional": false
         },
         {
@@ -300,7 +300,7 @@
       ],
       "directions": [
         {
-          "instructions": "In a large skillet, sautÃ© sausage, carrot, and onion in butter until onion is tender.",
+          "instructions": "In a large skillet, sauté sausage, carrot, and onion in butter until onion is tender.",
           "optional": false
         },
         {
@@ -480,22 +480,6 @@
           "optional": false
         }
       ]
-    },
-    {
-      "ingredients": [],
-      "directions": [],
-      "postDate": "01/18/2021 10:16:28 PM",
-      "uuid": "Mliqwil"
-    },
-    {
-      "ingredients": [
-        {
-          "uuid": "f676118a-c479-4873-9d56-f2908721302c"
-        }
-      ],
-      "directions": [],
-      "postDate": "01/18/2021 10:16:55 PM",
-      "uuid": "r0g_Wvx"
     }
   ],
   "specials": [

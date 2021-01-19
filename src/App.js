@@ -3,25 +3,28 @@ import "./style.css";
 import FoodList from "./components/FoodList";
 import FoodForm from "./components/FoodForm";
 import styled from "styled-components";
-import { Provider } from "react-redux";
-import store from "./state/store";
+import { useHistory } from "react-router-dom";
 
 const Button = styled.button`
   margin-top: 10px;
   margin-left: 5px;
 `;
-function Root() {
-  function test(arr) {
-    console.log(arr);
+
+function App() {
+  const history = useHistory();
+  function navigateToSpecialsPage() {
+    history.push("/specials");
   }
   return (
     <React.Fragment>
-      <Button className="btn btn-info">View the specials </Button>
+      <Button onClick={navigateToSpecialsPage} className="btn btn-info">
+        View the specials{" "}
+      </Button>
       <br />
       <div style={{ marginTop: 5 }}>
         <div className="food-list">
           <div className="food-list-content">
-            <FoodList test={test} />
+            <FoodList />
           </div>
         </div>
         <div className="food-form">
@@ -34,4 +37,4 @@ function Root() {
   );
 }
 
-export default Root;
+export default App;

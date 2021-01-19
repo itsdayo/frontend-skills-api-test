@@ -4,14 +4,13 @@ import "./../style.css";
 import Modal from "react-modal";
 import { Formik, Field, Form } from "formik";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getIngredients, getRecipes, updateRecipes } from "../actions";
 import {
   getCurrentRecipe,
   updateIngredient,
-  saveRecipe,
+  saveCurrentRecipe,
+  postIngredient,
 } from "../actions/recipes";
 
 const CloseModalButton = styled.button`
@@ -71,7 +70,7 @@ const AddIngredientButton = styled.div`
   margin-left: 250px;
 `;
 
-function Ingredients(props) {
+function Ingredients() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { recipeId } = useParams();
@@ -80,31 +79,17 @@ function Ingredients(props) {
     dispatch(getCurrentRecipe(recipeId));
   }, []);
 
-  const [allData, setAllData] = useState([]);
-  // const ingredients = useSelector((state) => state.ingredients);
   const currentRecipe = useSelector((state) => state.recipes.currentRecipe);
 
   const ingredients = useSelector(
     (state) => state.recipes.currentRecipe.ingredients
   );
 
-  console.log(ingredients);
-
-  const state = useSelector((state) => state);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [allIngredients, setAllIngredients] = useState([]);
+
   const [selectedIngredient, setSelectedIngredient] = useState({});
   const [selectedFoodItem, setSelectedFoodItem] = useState({});
   const [foodItem, setFoodItem] = useState({});
-
-  // useEffect(() => {
-  //   // console.log(recipes.recipes);
-  //   setAllIngredients(props.location.state.foodItem.ingredients);
-  //   //dispatch(getIngredients(recipes.recipes[0]));
-  //   console.log(ingredients.ingredientsList);
-  //   console.log(props.location.state.foodItem.ingredients);
-  //   //dispatch(getRecipes());
-  // }, []);
 
   const customStyles = {
     content: {
@@ -116,20 +101,24 @@ function Ingredients(props) {
       transform: "translate(-50%, -50%)",
     },
   };
+
   function navigateToHomePage() {
     history.push("/");
   }
+  //set the selected ingredient arr and food item object to state
   function openModal(foodItem, ingredient) {
     setIsOpen(true);
-    console.log(ingredient);
     setSelectedIngredient(ingredient);
     setSelectedFoodItem(foodItem);
+    console.log(ingredient);
   }
 
   function closeModal() {
     setIsOpen(false);
     // dispatch(getIngredients(recipes.recipes[0]));
   }
+
+  //edit ingredient
   function handleSubmit(form) {
     const newIngredient = {
       uuid: selectedIngredient.uuid,
@@ -140,62 +129,24 @@ function Ingredients(props) {
 
     dispatch(updateIngredient(newIngredient));
 
-    console.log("recipe", currentRecipe);
-
-    dispatch(saveRecipe(currentRecipe));
+    dispatch(saveCurrentRecipe());
 
     closeModal();
   }
 
-  function addIngredient(item) {
-    let newIngredient = item;
-    newIngredient.uuid = uuidv4();
-    // console.log(newIngredient);
-    // let arr = allData;
+  //add ingredient
+  function addIngredient(form) {
+    const newIngredient = {
+      uuid: uuidv4(),
+      amount: form.values.amount,
+      name: form.values.name,
+      measurement: form.values.measurement,
+    };
 
-    // let changedFoodItem = {};
-    // console.log(props);
-
-    // for (let i = 0; i <= arr.length - 1; i++) {
-    //   if (arr[i].uuid === props.location.state.foodItem.uuid) {
-    //     arr[i].ingredients.push(newIngredient);
-    //     changedFoodItem = arr[i];
-    //   }
-    // }
-
-    // const foodItem = ingredients.recipes[0];
-    // const recipes = JSON.parse(JSON.stringify(ingredients.recipes[0]));
-
-    // const ingredientsList = recipes.ingredients;
-    // console.log(ingredientsList, foodItem);
-    // console.log(recipes);
-    // for (let i = 0; i <= ingredientsList.length - 1; i++) {
-    //   if (ingredientsList[i].uuid === selectedIngredient.uuid) {
-    // ingredientsList.push(newIngredient);
-    //  break;
-    //   }
-    // }
-    // recipes.ingredients = ingredientsList;
-
-    // console.log(changedFoodItem);
-    // console.log(arr);
-    // axios
-    //   .put(
-    //     `http://localhost:3001/recipes/${props.location.state.foodItem.uuid}`,
-    //     changedFoodItem
-    //   )
-    //   .then(() => setAllIngredients(() => [...changedFoodItem.ingredients]))
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //   });
-    // dispatch(updateRecipes(recipes));
-    // dispatch(getIngredients(recipes));
-    // setAllIngredients(() => [...recipes.ingredients]);
-    // setFoodItem(changedFoodItem);
-    // dispatch(storeIngredient(changedFoodItem));
-    //window.location.reload();
+    dispatch(postIngredient(newIngredient));
+    dispatch(saveCurrentRecipe());
   }
+
   return (
     <div>
       <Modal
@@ -217,7 +168,8 @@ function Ingredients(props) {
               name: selectedIngredient.name,
             }}
             onSubmit={handleSubmit}
-            render={(formikProps) => (
+          >
+            {(formikProps) => (
               <Form>
                 <div>
                   <ModalAmount>
@@ -269,7 +221,7 @@ function Ingredients(props) {
                 </IngredientButton>
               </Form>
             )}
-          />
+          </Formik>
         </div>
       </Modal>
       <button onClick={navigateToHomePage} className="btn btn-secondary">
@@ -293,12 +245,13 @@ function Ingredients(props) {
           </ul>
           <AddIngredientForm>
             <Formik
+              validator={() => ({})}
               enableReinitialize
               initialValues={{}}
-              onSubmit={addIngredient}
+              //onSubmit={add}
             >
               {(formikProps) => (
-                <Form>
+                <Form id="ingredientForm">
                   <div>
                     <AddFormAmount>
                       <label className="form-label">Amount</label>
@@ -345,8 +298,9 @@ function Ingredients(props) {
                     </Field>
                   </AddFormName>
                   <AddIngredientButton
-                    type="submit"
+                    type="button"
                     className="btn btn-warning"
+                    onClick={() => addIngredient(formikProps)}
                   >
                     Add Ingredient
                   </AddIngredientButton>
