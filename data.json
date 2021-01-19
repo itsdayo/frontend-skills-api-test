@@ -1,6 +1,154 @@
 {
   "recipes": [
-    {},
+    {
+      "uuid": "e80ea521-4d42-48fe-a7a6-ac8952bc0de4",
+      "title": "Queso Brat Scramble",
+      "description": "A delicious breakfast, fit for a crowd.",
+      "images": {
+        "full": "/img/queso_brat_scramble.jpg",
+        "medium": "/img/queso_brat_scramble--m.jpg",
+        "small": "/img/queso_brat_scramble--s.jpg"
+      },
+      "servings": 5,
+      "prepTime": 10,
+      "cookTime": 20,
+      "postDate": "01/20/2018 05:15:03 PM",
+      "editDate": "01/18/2021 10:17:36 PM",
+      "ingredients": [
+        {
+          "uuid": "62798278-2fbc-4c31-98de-b7959c191688",
+          "amount": 6.6,
+          "name": "queso brats",
+          "measurement": "package (19 oz)"
+        },
+        {
+          "uuid": "2df619ea-8472-48f4-9615-3f387a492d22",
+          "amount": 8,
+          "measurement": "tablespoons",
+          "name": "canola oil"
+        },
+        {
+          "uuid": "fee4a89c-8c27-4073-9055-a0b052a1c079",
+          "amount": 4,
+          "measurement": "",
+          "name": "corn tortillas, cut into 1/2-inch squares"
+        },
+        {
+          "uuid": "6278b9e5-3862-44f8-97b0-5bd37bb70141",
+          "amount": 0.5,
+          "measurement": "",
+          "name": "small red onion, diced"
+        },
+        {
+          "uuid": "41785201-9596-4ebc-b8ea-1feb562ebc53",
+          "amount": 1,
+          "measurement": "",
+          "name": "small red pepper, diced"
+        },
+        {
+          "uuid": "34918edd-b5fd-475c-9a13-364632971938",
+          "amount": 1,
+          "measurement": "",
+          "name": "jalapeno pepper, seeded and chopped"
+        },
+        {
+          "uuid": "75fe2545-4053-40bd-9c4f-150b61a052fb",
+          "amount": 2,
+          "measurement": "cloves",
+          "name": "garlic, minced"
+        },
+        {
+          "uuid": "3d810ba9-7e4e-48aa-b2e9-7918e38b358d",
+          "amount": 8,
+          "measurement": "",
+          "name": "eggs"
+        },
+        {
+          "uuid": "7fbce07e-b640-4f36-8a7f-d094dc04d7d2",
+          "amount": 0.25,
+          "measurement": "cup",
+          "name": "half-and-half cream"
+        },
+        {
+          "uuid": "cdfa1350-3190-46b5-8f4d-4dfdadee7e39",
+          "amount": 1.5,
+          "measurement": "teaspoons",
+          "name": "chili powder"
+        },
+        {
+          "uuid": "210b15ac-552e-4450-b162-c0a41bb3389d",
+          "amount": 0.5,
+          "measurement": "teaspoon",
+          "name": "salt"
+        },
+        {
+          "uuid": "885293b6-50ae-4ffd-b6d4-32b795d96031",
+          "amount": 5,
+          "measurement": "dashes",
+          "name": "hot sauce, more to taste"
+        },
+        {
+          "uuid": "da6965ac-b6c4-4715-b3d5-2a24f236650a",
+          "amount": 1,
+          "measurement": "cup",
+          "name": "halved grape tomatoes"
+        },
+        {
+          "uuid": "5f79e3c0-f214-4226-a660-1049778355a8",
+          "amount": 0.5,
+          "measurement": "cup",
+          "name": "canned black beans, rinsed and drained"
+        },
+        {
+          "uuid": "86c9eb8e-3ff6-4d4f-83d7-ea4d9f1ae455",
+          "amount": 1,
+          "measurement": "cup",
+          "name": "pepper jack cheese, shredded"
+        }
+      ],
+      "directions": [
+        {
+          "instructions": "Cook brats according to package directions. Cool slightly and halve and slice.",
+          "optional": false
+        },
+        {
+          "instructions": "In a large skillet, over medium heat, heat 1/2 cup oil in a skillet, add tortilla squares; fry until crisp.",
+          "optional": false
+        },
+        {
+          "instructions": "With a slotted spoon remove tortilla to a paper-towel lined plate to drain.",
+          "optional": false
+        },
+        {
+          "instructions": "In another skillet, sautÃ© the onion, pepper, jalapeno and garlic in the remaining 1 tablespoon oil.",
+          "optional": false
+        },
+        {
+          "instructions": "Remove from pan and keep warm.",
+          "optional": false
+        },
+        {
+          "instructions": "In a bowl, combine the eggs, cream, chili powder, salt and hot sauce. ",
+          "optional": false
+        },
+        {
+          "instructions": "Pour into skillet; cook, stirring occasionally until set.",
+          "optional": false
+        },
+        {
+          "instructions": "Add the brats, tomatoes, black beans and tortillas; heat through.",
+          "optional": false
+        },
+        {
+          "instructions": "Sprinkle with cheese.",
+          "optional": true
+        },
+        {
+          "instructions": "Serve immediately.",
+          "optional": false
+        }
+      ]
+    },
     {
       "uuid": "7f8e872d-47a5-44e6-b1ad-7b7cb94f1d30",
       "title": "Italian Meatballs",
@@ -14,13 +162,13 @@
       "prepTime": 25,
       "cookTime": 20,
       "postDate": "02/19/2018 12:47:42 AM",
-      "editDate": "01/17/2021 09:01:57 PM",
+      "editDate": "02/19/2018 01:12:05 AM",
       "ingredients": [
         {
-          "amount": 1.1,
+          "uuid": "3d810ba9-7e4e-48aa-b2e9-7918e38b358d",
+          "amount": 1,
           "measurement": "",
-          "name": "egg, lightly beaten",
-          "uuid": "96fd71a4-68c4-4603-8fc4-49c6d3321a38"
+          "name": "egg, lightly beaten"
         },
         {
           "uuid": "6d5dce01-b305-4df1-875e-1354a048bcea",
@@ -51,34 +199,11 @@
           "amount": 1.25,
           "measurement": "lbs",
           "name": "ground italian sausage"
-        },
-        {
-          "amount": 0.1,
-          "uuid": "2b0171ec-68a2-4fd7-99bb-2b6eecccc323"
-        },
-        {
-          "uuid": "759527db-48d5-487e-86b1-059f8ca3df84"
-        },
-        {
-          "amount": 0,
-          "uuid": "22c6f54d-5768-4b2b-99b9-a327c8a63144"
-        },
-        {
-          "uuid": "12c0d401-7be5-4f07-adf1-526afe3324ac"
-        },
-        {
-          "uuid": "04b93724-9f40-4bd1-8e3a-f7aaca3922c7"
-        },
-        {
-          "uuid": "6b4cba22-1e70-4fc1-9eb5-097dd80e8433"
-        },
-        {
-          "uuid": "81fb19a3-a73e-4458-831f-1a7177eee065"
         }
       ],
       "directions": [
         {
-          "instructions": "Preheat oven to 350°F.",
+          "instructions": "Preheat oven to 350Â°F.",
           "optional": false
         },
         {
@@ -94,30 +219,12 @@
           "optional": false
         },
         {
-          "instructions": "Bake for 20 minutes or until meatballs are cooked through (160°F).",
+          "instructions": "Bake for 20 minutes or until meatballs are cooked through (160Â°F).",
           "optional": false
         },
         {
           "instructions": "Serve with your favorite sauce and spaghetti.",
           "optional": true
-        },
-        {
-          "uuid": "7b72297c-40d0-4326-a1ad-636d89e51365"
-        },
-        {
-          "uuid": "720fcb46-171d-48ee-a293-6fa2f39b9bcd"
-        },
-        {
-          "uuid": "34c6c7b0-a705-4ef2-8ed9-40ee3045881e"
-        },
-        {
-          "uuid": "f75a97c2-2257-4f12-8ab5-10f990aaba97"
-        },
-        {
-          "uuid": "46d9efef-fef2-4b01-9ae3-3c4bdf2d0fd8"
-        },
-        {
-          "uuid": "1915e2cc-48ee-4da4-ad43-e242b03c7d40"
         }
       ]
     },
@@ -134,7 +241,7 @@
       "prepTime": 20,
       "cookTime": 20,
       "postDate": "03/12/2018 01:51:12 PM",
-      "editDate": "2021-01-18T04:59:21.632Z",
+      "editDate": "03/15/2018 04:14:03 PM",
       "ingredients": [
         {
           "uuid": "3d810ba9-7e4e-48aa-b2e9-7918e38b358d",
@@ -193,7 +300,7 @@
       ],
       "directions": [
         {
-          "instructions": "In a large skillet, sauté sausage, carrot, and onion in butter until onion is tender.",
+          "instructions": "In a large skillet, sautÃ© sausage, carrot, and onion in butter until onion is tender.",
           "optional": false
         },
         {
@@ -377,20 +484,18 @@
     {
       "ingredients": [],
       "directions": [],
-      "uuid": "tQsbOBd",
-      "editDate": 17
+      "postDate": "01/18/2021 10:16:28 PM",
+      "uuid": "Mliqwil"
     },
     {
-      "ingredients": [],
+      "ingredients": [
+        {
+          "uuid": "f676118a-c479-4873-9d56-f2908721302c"
+        }
+      ],
       "directions": [],
-      "uuid": "5-ObVa0"
-    },
-    {
-      "ingredients": [],
-      "directions": [],
-      "postDate": "01/17/2021 09:03:58 PM",
-      "uuid": "mCZ_GXZ",
-      "editDate": "01/17/2021 09:04:41 PM"
+      "postDate": "01/18/2021 10:16:55 PM",
+      "uuid": "r0g_Wvx"
     }
   ],
   "specials": [

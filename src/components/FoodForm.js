@@ -6,25 +6,63 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addData } from "./actions";
+import { postRecipes } from "../actions";
 
 const Button = styled.button`
   position: "absolute";
   margin-left: 430px;
-  margin-top: 40px;
+  margin-top: 45px;
 `;
 const IngredientButton = styled.button`
   position: "absolute";
   margin-left: 370px;
+  margin-top: 60px;
 `;
 const InstructionButton = styled.button`
   position: "absolute";
   margin-left: 400px;
 `;
 
+const Name = styled.div`
+  float: left;
+`;
+const Description = styled.div`
+  float: right;
+  margin-right: 50px;
+`;
+const Servings = styled.div`
+  float: left;
+  margin-top: 25px;
+  margin-left: -47px;
+`;
+const PrepTime = styled.div`
+  float: left;
+  margin-left: 75px;
+`;
+const CookTime = styled.div`
+  float: right;
+  margin-top: -26px;
+  margin-right: 25px;
+`;
+const Amount = styled.div`
+  float: left;
+`;
+const Measurement = styled.div`
+  float: right;
+  margin-right: 50px;
+`;
+const IngredientName = styled.div`
+  position: absolute;
+  margin-top: 15px;
+`;
+const Instruction = styled.div``;
+const Optional = styled.div``;
 const HrTagContainer = styled.div`
   margin-top: 20px;
 `;
+const PrepAndCookContainer = styled.div``;
+
+const ServingsPrepAndCookContainer = styled.div``;
 
 function FoodForm() {
   const [ingredients, setIngredients] = useState([]);
@@ -96,14 +134,9 @@ function FoodForm() {
     arr.postDate = dateTime;
     console.log(arr);
     console.log(reduxState);
-    axios
-      .post(`http://localhost:3001/recipes`, arr)
-      .then((res) => {})
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-    dispatch(addData(arr));
+
+    dispatch(postRecipes(arr));
+
     window.location.reload();
   }
   function addIngredient(data) {
@@ -143,84 +176,80 @@ function FoodForm() {
           onSubmit={addFoodItem}
           render={(formikProps) => (
             <Form id="foodForm">
-              <div style={{ float: "left" }}>
-                <label className="form-label">Name</label>
-                <Field
-                  name="title"
-                  type="text"
-                  className="text-input"
-                  placeholder="Enter a name"
-                  style={{ position: "absolute" }}
-                />
-                <br />
-              </div>
-              <div
-                style={{ position: "absolute", marginLeft: 270, marginTop: -2 }}
-              >
-                <label className="form-label">Description</label>
-                <Field
-                  name="description"
-                  type="text"
-                  placeholder="Enter a description"
-                  className="text-input"
-                />
+              <div>
+                <Name>
+                  <label className="form-label">Name</label>
+                  <Field
+                    name="title"
+                    type="text"
+                    className="text-input"
+                    placeholder="Enter a name"
+                    style={{ position: "absolute" }}
+                  />
+                  <br />
+                </Name>
+
+                <Description>
+                  <label className="form-label">Description</label>
+                  <Field
+                    name="description"
+                    type="text"
+                    placeholder="Enter a description"
+                    className="text-input"
+                  />
+                </Description>
               </div>
               <br />
               <div>
-                <div
-                  className="servings"
-                  style={{ position: "absolute", marginTop: 19 }}
-                >
-                  <label className="form-label">Servings</label>
+                <ServingsPrepAndCookContainer>
+                  <Servings>
+                    <label className="form-label">Servings</label>
 
-                  <Field name="servings">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          {...field}
-                          type="number"
-                          className="number-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
-                </div>
-                <br />
-                <div
-                  style={{
-                    position: "absolute",
-
-                    marginLeft: 270,
-                  }}
-                >
-                  <label className="form-label">Prep Time (in mins)</label>
-                  <Field name="prepTime">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          {...field}
-                          type="number"
-                          className="number-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
-                </div>
-                <br />
-                <div style={{ marginTop: 15 }}>
-                  <label className="form-label">Cook time (in mins)</label>
-                  <Field name="cookTime" type="number">
-                    {({ field, form, meta }) => (
-                      <span>
-                        <input
-                          {...field}
-                          type="number"
-                          className="number-input"
-                        />
-                      </span>
-                    )}
-                  </Field>
-                </div>
+                    <Field name="servings">
+                      {({ field, form, meta }) => (
+                        <span>
+                          <input
+                            {...field}
+                            type="number"
+                            className="number-input"
+                          />
+                        </span>
+                      )}
+                    </Field>
+                  </Servings>
+                  <br />
+                  <PrepAndCookContainer>
+                    <PrepTime>
+                      <label className="form-label">Prep Time (in mins)</label>
+                      <Field name="prepTime">
+                        {({ field, form, meta }) => (
+                          <span>
+                            <input
+                              {...field}
+                              type="number"
+                              className="number-input"
+                            />
+                          </span>
+                        )}
+                      </Field>
+                    </PrepTime>
+                    <br />
+                    <CookTime>
+                      <label className="form-label">Cook time (in mins)</label>
+                      <Field name="cookTime" type="number">
+                        {({ field, form, meta }) => (
+                          <span>
+                            <input
+                              {...field}
+                              type="number"
+                              className="number-input"
+                            />
+                          </span>
+                        )}
+                      </Field>
+                    </CookTime>
+                  </PrepAndCookContainer>
+                </ServingsPrepAndCookContainer>
               </div>
             </Form>
           )}
@@ -237,7 +266,7 @@ function FoodForm() {
           onSubmit={addIngredient}
           render={(formikProps) => (
             <Form>
-              <div style={{ position: "absolute", float: "left" }}>
+              <Amount>
                 <label className="form-label">Amount</label>
                 <Field
                   name="amount"
@@ -246,8 +275,8 @@ function FoodForm() {
                   placeholder="How much?"
                   className="text-input"
                 />
-              </div>
-              <div style={{ marginLeft: 250 }}>
+              </Amount>
+              <Measurement>
                 <label className="form-label">Measurement</label>
                 <Field name="measurement" className="text-input-ingredients">
                   {({ field, form, meta }) => (
@@ -261,8 +290,10 @@ function FoodForm() {
                     </span>
                   )}
                 </Field>
-              </div>
-              <div style={{ postion: "absolute", marginTop: 15 }}>
+              </Measurement>
+
+              <br />
+              <IngredientName>
                 <label className="form-label">Name</label>
                 <Field name="name" type="text" className="text-input">
                   {({ field, form, meta }) => (
@@ -276,7 +307,7 @@ function FoodForm() {
                     </span>
                   )}
                 </Field>
-              </div>
+              </IngredientName>
               <IngredientButton className="btn btn-secondary " type="submit">
                 Submit Ingredient
               </IngredientButton>
@@ -286,10 +317,9 @@ function FoodForm() {
         <ul>
           {ingredients.map((item, index) => (
             <li key={index}>
-              <span style={{ fontWeight: "bold" }}>Name:</span> {item.name}{" "}
-              <span style={{ fontWeight: "bold" }}>Measurement:</span>{" "}
-              {item.measurement}{" "}
-              <span style={{ fontWeight: "bold" }}>Amount:</span> {item.amount}{" "}
+              <span className="bold-text">Name:</span> {item.name}{" "}
+              <span className="bold-text">Measurement:</span> {item.measurement}{" "}
+              <span className="bold-text">Amount:</span> {item.amount}{" "}
             </li>
           ))}
         </ul>
@@ -306,10 +336,8 @@ function FoodForm() {
           onSubmit={addDirection}
           render={(formikProps) => (
             <Form>
-              <div>
-                <label style={{ bottom: 5 }} className="form-label">
-                  Instruction
-                </label>
+              <Instruction>
+                <label className="form-label">Instruction</label>
                 <Field
                   name="instructions"
                   type="text"
@@ -319,15 +347,15 @@ function FoodForm() {
                   component="textarea"
                   className="textarea"
                 />
-              </div>
-              <div style={{ marginTop: 15 }}>
+              </Instruction>
+              <Optional>
                 <label className="form-label">Optional</label>
                 <Field name="optional" component="select">
                   <option value="">---Select if it is Optional ---</option>
                   <option value="true">Yes</option>
                   <option value="false">No</option>
                 </Field>
-              </div>
+              </Optional>
 
               <InstructionButton className="btn btn-secondary" type="submit">
                 Add Instruction
@@ -338,9 +366,8 @@ function FoodForm() {
         <ul>
           {directions.map((item, index) => (
             <li>
-              <span style={{ fontWeight: "bold" }}>Instruction</span>{" "}
-              {item.instructions}{" "}
-              <span style={{ fontWeight: "bold" }}>Optional</span>{" "}
+              <span className="bold-text">Instruction</span> {item.instructions}{" "}
+              <span className="bold-text">Optional</span>{" "}
               {changeOption(item.optional)}{" "}
             </li>
           ))}

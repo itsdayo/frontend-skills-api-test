@@ -6,6 +6,8 @@ import { Formik, Field, Form } from "formik";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const CloseModalButton = styled.button`
   position: "absolute";
   left: 4px;
@@ -23,6 +25,10 @@ function Directions(props) {
   const [selectedDirection, setSelectedDirection] = useState({});
   const [selectedFoodItem, setSelectedFoodItem] = useState({});
   const [foodItem, setFoodItem] = useState({});
+  const directions = useSelector(
+    (state) => state.recipies.currentRecipe.directions
+  );
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/recipes")
@@ -190,7 +196,7 @@ function Directions(props) {
         <h1 className="directions-header">Directions</h1>
         <div style={{ marginTop: 15 }}>
           <ul>
-            {allDirections.map((item, index) => (
+            {directions.map((item, index) => (
               <li style={{ marginTop: 15 }} key={index}>
                 <span style={{ fontWeight: "bold" }}>Instruction:</span>
                 <span style={{ marginLeft: 5 }}>{item.instructions} </span>

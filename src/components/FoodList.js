@@ -6,24 +6,40 @@ import Modal from "react-modal";
 import styled from "styled-components";
 import { Formik, Field, Form } from "formik";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  getRecipes,
+  updateRecipes,
+  getCurrentRecipe,
+} from "../actions/recipes";
+// import { storeIngredient } from "./actions";
+
 const CloseModalButton = styled.button`
   position: "absolute";
   left: 4px;
   top: 4px;
 `;
+
 const SubmitEditButton = styled.button`
   position: "absolute";
   margin-left: 450px;
   margin-top: 15px;
 `;
+
+const Labels = styled.span`
+  font-weight: 700;
+  margin-left: 5px;
+`;
+
 function FoodList(props) {
   const history = useHistory();
   const reduxState = useSelector((state) => state.changeData);
+  const recipes = useSelector((state) => state.recipes);
   const [allData, setAllData] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [foodItem, setFoodItem] = useState({});
   const [formList, setFormList] = useState([]);
-
+  const dispatch = useDispatch();
+  console.log(recipes.recipesList);
   useEffect(() => {
     // retrieving data from the recipe  api
     axios
@@ -37,6 +53,10 @@ function FoodList(props) {
       });
 
     console.log(reduxState);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getRecipes());
   }, []);
 
   function openModal(foodItem) {
@@ -58,6 +78,7 @@ function FoodList(props) {
       transform: "translate(-50%, -50%)",
     },
   };
+
   function editItem(item) {
     let newDate = new Date();
     let minutes = newDate.getMinutes().toString();
@@ -74,16 +95,19 @@ function FoodList(props) {
     let lastPortionOfTime = "";
     let doubleDigitMonth = "";
     let doubleDigitHour = "";
+
     if (minutes < 10) {
       doubleDigitMin = zero.concat(minutes);
     } else {
       doubleDigitMin = minutes;
     }
+
     if (newMonth < 10) {
       doubleDigitMonth = zero.concat(newMonth);
     } else {
       doubleDigitMonth = newMonth;
     }
+
     if (seconds < 10) {
       doubleDigitSecs = zero.concat(seconds);
     } else {
@@ -98,11 +122,13 @@ function FoodList(props) {
       AMorPM = " AM";
       lastPortionOfTime = doubleDigitSecs.concat(AMorPM);
     }
+
     if (parseInt(hours) < 10) {
       doubleDigitHour = zero.concat(hours);
     } else {
       doubleDigitHour = hours;
     }
+
     let dateTime =
       doubleDigitMonth +
       "/" +
@@ -116,34 +142,47 @@ function FoodList(props) {
       ":" +
       lastPortionOfTime;
 
-    let changedFoodItem = foodItem;
-    changedFoodItem.cookTime = item.cookTime;
-    changedFoodItem.description = item.description;
-    changedFoodItem.prepTime = item.prepTime;
-    changedFoodItem.servings = item.servings;
-    changedFoodItem.title = item.title;
-    changedFoodItem.editDate = dateTime;
+    let oldRecipe = foodItem;
+    // const newRecipe = Object.assign({ cookTime: 31 }, oldRecipe);
+    const newRecipe = JSON.parse(JSON.stringify(oldRecipe));
 
-    axios
-      .put(`http://localhost:3001/recipes/${foodItem.uuid}`, changedFoodItem)
-      .then()
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    newRecipe.cookTime = item.cookTime;
+    newRecipe.description = item.description;
+    newRecipe.prepTime = item.prepTime;
+    newRecipe.servings = item.servings;
+    newRecipe.title = item.title;
+    newRecipe.editDate = dateTime;
+
+    // axios
+    //   .put(`http://localhost:3001/recipes/${foodItem.uuid}`, changedFoodItem)
+    //   .then()
+    //   .catch(function (error) {
+    //     // handle error
+    //     console.log(error);
+    //   });
+    dispatch(updateRecipes(newRecipe));
+    //console.log(newRecipe, item.cookTime);
     window.location.reload();
   }
-  function viewDescription(foodItem) {
+
+  function viewDirections(foodItem) {
     history.push({
-      pathname: "/directions",
+      pathname: `/directions/${foodItem.uuid}`,
       state: { foodItem: foodItem },
     });
   }
+
   function viewIngredients(foodItem) {
+    // dispatch(getCurrentRecipe(foodItem));
+
     history.push({
-      pathname: "/ingredients",
-      state: { foodItem: foodItem },
+      pathname: `/ingredients/${foodItem.uuid}`,
+      state: { foodItem },
     });
+  }
+
+  async function storeIngredient() {
+    dispatch(storeIngredient(foodItem));
   }
 
   return (
@@ -172,38 +211,32 @@ function FoodList(props) {
             onSubmit={editItem}
             render={(formikProps) => (
               <Form>
-                <div style={{ float: "left" }}>
-                  <label className="form-label">Name</label>
-                  <Field
-                    name="title"
-                    type="text"
-                    className="text-input"
-                    placeholder="Enter a name"
-                    style={{ position: "absolute" }}
-                  />
-                  <br />
-                </div>
-                <div
-                  style={{
-                    position: "absolute",
-                    marginLeft: 270,
-                    marginTop: -2,
-                  }}
-                >
-                  <label className="form-label">Description</label>
-                  <Field
-                    name="description"
-                    type="text"
-                    placeholder="Enter a description"
-                    className="text-input"
-                  />
+                {/* here */}
+                <div>
+                  <div className="modal-food-name">
+                    <label className="form-label">Name</label>
+                    <Field
+                      name="title"
+                      type="text"
+                      className="text-input"
+                      placeholder="Enter a name"
+                    />
+                    <br />
+                  </div>
+                  {/* here */}
+                  <div className="modal-food-description">
+                    <label className="form-label">Description</label>
+                    <Field
+                      name="description"
+                      type="text"
+                      placeholder="Enter a description"
+                      className="text-input"
+                    />
+                  </div>
                 </div>
                 <br />
                 <div>
-                  <div
-                    className="servings"
-                    style={{ position: "absolute", marginTop: 19 }}
-                  >
+                  <div className="modal-food-servings">
                     <label className="form-label">Servings</label>
 
                     <Field name="servings">
@@ -219,128 +252,119 @@ function FoodList(props) {
                     </Field>
                   </div>
                   <br />
-                  <div
-                    style={{
-                      position: "absolute",
-                      float: "right",
-                      marginLeft: 160,
-                    }}
-                  >
-                    <label className="form-label">Prep Time (in mins)</label>
-                    <Field name="prepTime">
-                      {({ field, form, meta }) => (
-                        <span>
-                          <input
-                            {...field}
-                            type="number"
-                            className="number-input"
-                          />
-                        </span>
-                      )}
-                    </Field>
-                  </div>
-                  <div
-                    style={{
-                      marginLeft: 380,
-                      marginTop: -1,
-                    }}
-                  >
-                    <label className="form-label">Cook time (in mins)</label>
-                    <Field name="cookTime" type="number">
-                      {({ field, form, meta }) => (
-                        <span>
-                          <input
-                            {...field}
-                            type="number"
-                            className="number-input"
-                          />
-                        </span>
-                      )}
-                    </Field>
+                  {/* here */}
+                  <div className="modal-preptime-cooktime-container">
+                    <div className="modal-food-prepTime">
+                      <label className="form-label">Prep Time (in mins)</label>
+                      <Field name="prepTime">
+                        {({ field, form, meta }) => (
+                          <span>
+                            <input
+                              {...field}
+                              type="number"
+                              className="number-input"
+                            />
+                          </span>
+                        )}
+                      </Field>
+                    </div>
+
+                    {/* here */}
+                    <div className="modal-food-cookTime">
+                      <label className="form-label">Cook time (in mins)</label>
+                      <Field name="cookTime" type="number">
+                        {({ field, form, meta }) => (
+                          <span>
+                            <input
+                              {...field}
+                              type="number"
+                              className="number-input"
+                            />
+                          </span>
+                        )}
+                      </Field>
+                    </div>
                   </div>
                 </div>
 
                 <SubmitEditButton className="btn btn-primary" type="submit">
-                  Add Instruction
+                  Submit
                 </SubmitEditButton>
               </Form>
             )}
           />
         </div>
       </Modal>
-      {allData.map((item, index) => (
+      {recipes.recipesList.map((item, index) => (
         <div key={index} className="food-card">
           <div className="food-card-content">
             {item.images != undefined ? (
-              <img
-                className="food-list-image"
-                src={item.images.small}
-                alt="Sorry something went wrong"
-                height={100}
-                width={150}
-              />
+              <div className="food-list-image-container">
+                <img
+                  className="food-list-image"
+                  src={item.images.small}
+                  alt="Sorry something went wrong"
+                  height={100}
+                  width={150}
+                />
+              </div>
             ) : (
-              <img
-                className="food-list-image"
-                src="https://images.squarespace-cdn.com/content/v1/55ece940e4b048d1ed401c11/1450136257542-4DATU4KRB70MDENGJXJX/ke17ZwdGBToddI8pDm48kAf-OpKpNsh_OjjU8JOdDKBZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwkCFOLgzJj4yIx-vIIEbyWWRd0QUGL6lY_wBICnBy59Ye9GKQq6_hlXZJyaybXpCc/X%3A++The+Unknown"
-                // alt="Sorry something went wrong"
-                height={100}
-                width={150}
-              />
+              <div className="food-list-image-container">
+                <img
+                  className="food-list-image"
+                  src="https://images.squarespace-cdn.com/content/v1/55ece940e4b048d1ed401c11/1450136257542-4DATU4KRB70MDENGJXJX/ke17ZwdGBToddI8pDm48kAf-OpKpNsh_OjjU8JOdDKBZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwkCFOLgzJj4yIx-vIIEbyWWRd0QUGL6lY_wBICnBy59Ye9GKQq6_hlXZJyaybXpCc/X%3A++The+Unknown"
+                  alt="Sorry something went wrong"
+                  height={100}
+                  width={150}
+                />
+              </div>
             )}
             <div className="food-list-description">
               <div className="food-card-text">
-                <span style={{ fontWeight: "bold" }}>Name:</span> {item.title}{" "}
+                <Labels>Name:</Labels> {item.title}{" "}
               </div>
               <div className="food-card-text">
-                <span style={{ fontWeight: "bold" }}>Description:</span>{" "}
-                {item.description}
+                <Labels>Description:</Labels> {item.description}
               </div>
               <div className="food-card-text">
-                <span style={{ fontWeight: "bold" }}>Serving:</span>{" "}
-                {item.servings}
-                <span style={{ fontWeight: "bold", marginLeft: 5 }}>
-                  Prep Time:
-                </span>
-                <span style={{ marginLeft: 2 }}> {item.prepTime} </span>
-                <span style={{ fontWeight: "bold", marginLeft: 5 }}>
-                  Cook time:
-                </span>{" "}
-                {item.cookTime}
+                <Labels>Serving:</Labels> {item.servings}
+                <Labels>Prep Time: </Labels>
+                {item.prepTime}
+                <Labels>Cook time:</Labels> {item.cookTime}
               </div>
               <div className="food-card-text">
-                <span style={{ fontWeight: "bold" }}>Posted on:</span>{" "}
-                {item.postDate}
+                <Labels>Posted on: </Labels> {item.postDate}
               </div>
               <div className="food-card-text">
-                <span style={{ fontWeight: "bold" }}>Edited on:</span>
-                <span style={{ marginLeft: 3 }}>{item.editDate}</span>
+                <Labels>Edited on: </Labels>
+                <span>{item.editDate}</span>
               </div>
             </div>
           </div>
           <div className="food-card-buttons">
-            <button
-              style={{}}
-              className="btn btn-success"
-              onClick={() => openModal(item)}
-            >
-              Edit{" "}
-            </button>
-            <button
-              style={{ marginLeft: 10 }}
-              className=" btn btn-warning"
-              onClick={() => viewDescription(item)}
-            >
-              View Directions
-            </button>
-            <button
-              style={{ marginLeft: 10, position: "absolute", float: "left" }}
-              className="btn btn-dark"
-              onClick={() => viewIngredients(item)}
-            >
-              {" "}
-              View Ingredients
-            </button>
+            <div className="edit-food-button-container">
+              <button
+                className=" btn btn-success"
+                onClick={() => openModal(item)}
+              >
+                Edit{" "}
+              </button>
+            </div>
+            <div>
+              <button
+                className="view-directions-button  btn btn-warning"
+                onClick={() => viewDirections(item)}
+              >
+                View Directions
+              </button>
+              <button
+                className="view-ingredients-button btn btn-dark"
+                onClick={() => viewIngredients(item)}
+              >
+                {" "}
+                View Ingredients
+              </button>
+            </div>
           </div>
         </div>
       ))}
