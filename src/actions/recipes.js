@@ -11,15 +11,21 @@ export const UPDATE_INGREDIENT_SUCCESS = "UPDATE_INGREDIENT_SUCCESS";
 export const POST_INGREDIENT = "POST_INGREDIENT";
 export const UPDATE_DIRECTION = "UPDATE_DIRECTION";
 
-export const ADD_DIRECTION = "ADD_DIRECTION";
+export const POST_DIRECTION = "POST_DIRECTION";
 export const UPDATE_RECIPE = "UPDATE_RECIPE";
 
 //get all recipes
 export function getRecipes() {
   return function (dispatch) {
-    return axios.get("http://localhost:3001/recipes").then(({ data }) => {
-      dispatch(getRecipesSuccess(data));
-    });
+    dispatch({ type: "GET_RECIPE_START" });
+    return axios
+      .get("http://localhost:3001/recipes")
+      .then(({ data }) => {
+        dispatch(getRecipesSuccess(data));
+      })
+      .catch((err) => {
+        dispatch({ type: "GET_RECIPE_FAILURE", err });
+      });
   };
 }
 
@@ -78,9 +84,9 @@ export function postIngredient(ingredient) {
     ingredient,
   };
 }
-export function addDirection(direction) {
+export function postDirection(direction) {
   return {
-    type: ADD_DIRECTION,
+    type: POST_DIRECTION,
     direction,
   };
 }

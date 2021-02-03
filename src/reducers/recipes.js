@@ -5,7 +5,7 @@ import {
   UPDATE_INGREDIENT,
   POST_INGREDIENT,
   UPDATE_DIRECTION,
-  ADD_DIRECTION,
+  POST_DIRECTION,
   UPDATE_RECIPE,
   ADD_RECIPE,
 } from "../actions/recipes";
@@ -51,11 +51,10 @@ const recipesReducer = (state = initialState, action) => {
 
       case UPDATE_DIRECTION:
         const directionIndex = action.directionIndex;
-        console.log("my index", directionIndex);
         draft.currentRecipe.directions[directionIndex] = action.direction;
         break;
 
-      case ADD_DIRECTION:
+      case POST_DIRECTION:
         draft.currentRecipe.directions.push(action.direction);
 
         break;

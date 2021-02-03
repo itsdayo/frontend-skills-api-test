@@ -1,88 +1,139 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./../style.css";
 
-import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getSpecials } from "../actions/specials";
 import { useHistory } from "react-router-dom";
-const SpecialsList = styled.div`
-  margin: auto;
-  width: 50%;
-  border: 3px solid #000 !important;
-  margin-top: 35px;
-  padding-bottom: 5px;
-`;
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+  CardActionArea,
+  makeStyles,
+} from "@material-ui/core";
+import "./../style.css";
 
-const SpecialsCard = styled.div`
-  width: 665px;
-  border: 1px solid blue !important;
-  margin-left: 10px;
-  margin-top: 7px;
-`;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  specialsButton: {},
 
-const TitleContainer = styled.div`
-  margin: auto;
-  width: 50%;
-  margin-top: 10px;
-`;
+  navButtonContainer: {
+    marginRight: theme.spacing(3),
+    right: 0,
+    position: "absolute",
+  },
 
-const Title = styled.div``;
-const TextContainer = styled.div`
-  margin: auto;
-  width: 70%;
-  margin-top: 10px;
-`;
-const TypeContainer = styled.div`
-  margin: auto;
-  width: 50%;
-  margin-top: 10px;
-`;
-const CodeContainer = styled.div`
-  margin: auto;
-  width: 65%;
-  margin-top: 10px;
-`;
+  gridList: {
+    height: "auto",
+    flexWrap: "wrap",
 
-const Text = styled.div``;
-const Type = styled.div``;
-const Code = styled.div``;
-const Button = styled.button``;
+    overflow: "auto",
+    paddingTop: 50,
+  },
+
+  card: {
+    width: 500,
+    display: "block",
+    overflowY: "scroll",
+    marginLeft: 390,
+  },
+  boldText: {
+    fontWeight: "bold",
+  },
+  specialsTitle: {},
+}));
 
 function Specials() {
   const dispatch = useDispatch();
   const specials = useSelector((state) => state.specials);
   const history = useHistory();
+  const classes = useStyles();
+
+  //retrieve all the specials in database
   useEffect(() => {
     dispatch(getSpecials());
   }, []);
 
-  function navigateToHomePage() {
-    history.push("/");
-  }
   return (
     <React.Fragment>
-      <Button className="btn btn-secondary" onClick={navigateToHomePage}>
-        Back
-      </Button>
-      <SpecialsList>
-        {specials &&
-          specials.specialsList.map((item, index) => (
-            <SpecialsCard>
-              <TitleContainer>
-                <Title className="text-center"> {item.title}</Title>
-              </TitleContainer>
-              <TextContainer>
-                <Text className="text-center">{item.text}</Text>
-              </TextContainer>
-              <TypeContainer>
-                <Type className="text-center">type: {item.type}</Type>
-              </TypeContainer>
-              <CodeContainer>
-                <Code className="text-center">use code {item.code}</Code>
-              </CodeContainer>
-            </SpecialsCard>
-          ))}
-      </SpecialsList>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            Specials
+          </Typography>
+          <div className={classes.navButtonContainer}>
+            <Button
+              variant="outlined"
+              className={classes.specialsButton}
+              color="inherit"
+              onClick={() => history.push("/")}
+            >
+              Go to Home Page
+            </Button>
+          </div>
+        </Toolbar>
+      </AppBar>
+
+      <div className={classes.specialsList}>
+        <Grid
+          className={classes.gridList}
+          container
+          justify="center"
+          spacing={1}
+        >
+          {specials &&
+            specials.specialsList.map((tile, index) => (
+              <Grid container item xs={12} spacing={0.1}>
+                <Card className={classes.card}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography variant="h6" className="text-center">
+                        <span className="specials-title">{tile.title}</span>
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="div"
+                        className="text-center"
+                      >
+                        <span classNane="specials-text">{tile.text}</span>
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="div"
+                        className="text-center"
+                      >
+                        <span className="specails-type">
+                          <span className="bold-text">type:</span> {tile.type}
+                        </span>
+                      </Typography>
+                      {tile.code && (
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          component="div"
+                          className="text-center"
+                        >
+                          <span className="specials-code">
+                            <span className="bold-text">USE CODE:</span>{" "}
+                            {tile.code}
+                          </span>
+                        </Typography>
+                      )}
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))}
+        </Grid>
+      </div>
     </React.Fragment>
   );
 }
