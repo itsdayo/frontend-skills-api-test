@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/RecipeBuilder/static/css/main.d09dad29.chunk.css",
-    "main.js": "/RecipeBuilder/static/js/main.0cec4ad5.chunk.js",
-    "main.js.map": "/RecipeBuilder/static/js/main.0cec4ad5.chunk.js.map",
-    "runtime-main.js": "/RecipeBuilder/static/js/runtime-main.d310db8f.js",
-    "runtime-main.js.map": "/RecipeBuilder/static/js/runtime-main.d310db8f.js.map",
-    "static/js/2.ecbf45ca.chunk.js": "/RecipeBuilder/static/js/2.ecbf45ca.chunk.js",
-    "static/js/2.ecbf45ca.chunk.js.map": "/RecipeBuilder/static/js/2.ecbf45ca.chunk.js.map",
-    "index.html": "/RecipeBuilder/index.html",
-    "static/css/main.d09dad29.chunk.css.map": "/RecipeBuilder/static/css/main.d09dad29.chunk.css.map",
-    "static/js/2.ecbf45ca.chunk.js.LICENSE.txt": "/RecipeBuilder/static/js/2.ecbf45ca.chunk.js.LICENSE.txt"
+    "main.css": "/Material-UI-Recipe/static/css/main.d09dad29.chunk.css",
+    "main.js": "/Material-UI-Recipe/static/js/main.0cec4ad5.chunk.js",
+    "main.js.map": "/Material-UI-Recipe/static/js/main.0cec4ad5.chunk.js.map",
+    "runtime-main.js": "/Material-UI-Recipe/static/js/runtime-main.dde9f119.js",
+    "runtime-main.js.map": "/Material-UI-Recipe/static/js/runtime-main.dde9f119.js.map",
+    "static/js/2.38faa5ea.chunk.js": "/Material-UI-Recipe/static/js/2.38faa5ea.chunk.js",
+    "static/js/2.38faa5ea.chunk.js.map": "/Material-UI-Recipe/static/js/2.38faa5ea.chunk.js.map",
+    "index.html": "/Material-UI-Recipe/index.html",
+    "static/css/main.d09dad29.chunk.css.map": "/Material-UI-Recipe/static/css/main.d09dad29.chunk.css.map",
+    "static/js/2.38faa5ea.chunk.js.LICENSE.txt": "/Material-UI-Recipe/static/js/2.38faa5ea.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.d310db8f.js",
-    "static/js/2.ecbf45ca.chunk.js",
+    "static/js/runtime-main.dde9f119.js",
+    "static/js/2.38faa5ea.chunk.js",
     "static/css/main.d09dad29.chunk.css",
     "static/js/main.0cec4ad5.chunk.js"
   ]
